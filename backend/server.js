@@ -5,17 +5,9 @@ const cors = require("cors");
 const app = express();
 
 // Middleware
+// Middleware
 app.use(cors({
-  origin: [
-    "http://localhost:3000",
-    "http://10.183.61.172:3000",
-    "https://localhost:3000",
-    "https://10.183.61.172:3000",
-    "http://localhost:3001",
-    "http://10.183.61.172:3001",
-    "https://localhost:3001",
-    "https://10.183.61.172:3001"
-  ],
+  origin: true, // Allow any origin for local development
   credentials: true
 })); // Enable CORS for frontend (HTTP and HTTPS)
 app.use(express.json({ limit: '50mb' })); // Increased limit for base64 images

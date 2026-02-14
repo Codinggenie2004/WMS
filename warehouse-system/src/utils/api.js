@@ -1,4 +1,9 @@
-export const API_URL = 'http://10.183.61.172:5000/api';
+const getBaseUrl = () => {
+  const { hostname } = window.location;
+  return `http://${hostname}:5000/api`;
+};
+
+export const API_URL = getBaseUrl();
 
 export const api = {
   // Auth
