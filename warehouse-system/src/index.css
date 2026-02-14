@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+    .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+/* QR Scanner Styles */
+#qr-reader {
+    border: none !important;
+}
+
+#qr-reader__dashboard_section {
+    display: none !important;
+}
+
+#qr-reader__dashboard_section_csr {
+    text-align: center !important;
+    margin: 10px 0 !important;
+}
+
+#qr-reader__dashboard_section_csr>button,
+#qr-reader__dashboard_section_csr>select {
+    background-color: #1e293b !important;
+    color: white !important;
+    border: 1px solid #475569 !important;
+    padding: 8px 16px !important;
+    border-radius: 8px !important;
+    margin: 5px !important;
+    cursor: pointer !important;
+}
+
+#qr-reader__dashboard_section_csr>button:hover {
+    background-color: #334155 !important;
+}
+
+#qr-reader video {
+    border-radius: 12px !important;
+    border: 2px solid #475569 !important;
+}
+
+#qr-reader__scan_region {
+    border: 2px solid #3b82f6 !important;
+    border-radius: 12px !important;
+}
+
+#qr-reader__camera_selection {
+    background-color: #1e293b !important;
+    color: white !important;
+    border: 1px solid #475569 !important;
+    padding: 8px !important;
+    border-radius: 8px !important;
+    margin: 10px 0 !important;
+}
