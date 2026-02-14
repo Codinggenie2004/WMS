@@ -53,6 +53,11 @@ const ProductForm = ({ currentUser, onProductAdded, loading, setLoading }) => {
   const initializeCamera = async () => {
     setCameraInitializing(true);
     try {
+      // Check if mediaDevices API is supported
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        throw new Error('Camera API not supported in this browser or insecure context. Please ensure you are using HTTPS.');
+      }
+
       // Try environment (back) camera first
       let stream;
       try {
