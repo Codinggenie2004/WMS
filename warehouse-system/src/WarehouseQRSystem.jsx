@@ -87,21 +87,19 @@ const WarehouseQRSystem = () => {
           <TabButton active={activeTab === 'scanner'} onClick={() => setActiveTab('scanner')}>
             Scan QR
           </TabButton>
+          <TabButton
+            active={activeTab === 'warehouse'}
+            onClick={() => setActiveTab('warehouse')}
+          >
+            Warehouse
+          </TabButton>
           {currentUser.role === 'admin' && (
-            <>
-              <TabButton
-                active={activeTab === 'warehouse'}
-                onClick={() => setActiveTab('warehouse')}
-              >
-                Warehouse
-              </TabButton>
-              <TabButton
-                active={activeTab === 'manage'}
-                onClick={() => setActiveTab('manage')}
-              >
-                Manage
-              </TabButton>
-            </>
+            <TabButton
+              active={activeTab === 'manage'}
+              onClick={() => setActiveTab('manage')}
+            >
+              Manage
+            </TabButton>
           )}
           <TabButton active={activeTab === 'products'} onClick={() => setActiveTab('products')}>
             Products
@@ -127,7 +125,7 @@ const WarehouseQRSystem = () => {
           />
         )}
 
-        {activeTab === 'warehouse' && currentUser.role === 'admin' && (
+        {activeTab === 'warehouse' && (
           <WarehouseView slots={slots} products={products} />
         )}
 
