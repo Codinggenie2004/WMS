@@ -27,7 +27,7 @@ const ManageAreas = ({ onAreaDeleted, loading, setLoading, triggerRefresh }) => 
   }, [triggerRefresh]);
 
   const handleDelete = async (areaId, areaName) => {
-    if (!window.confirm(`Delete "${areaName}"?\n\nYou can only delete areas with no slots.`)) {
+    if (!window.confirm(`Delete "${areaName}" and all its empty slots?\n\n(Cannot be deleted if there are occupied slots).`)) {
       return;
     }
 

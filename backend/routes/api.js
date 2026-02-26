@@ -118,7 +118,7 @@ router.post("/area", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-// Delete area (only if no slots exist in it)
+// Delete area (and clean up empty slots)
 router.delete("/areas/:id", async (req, res) => {
   try {
     const area = await Area.findById(req.params.id);
@@ -126,16 +126,59 @@ router.delete("/areas/:id", async (req, res) => {
       return res.status(404).json({ message: "Area not found" });
     }
 
-    // Check if any slots exist in this area
-    const slotsInArea = await Slot.find({ area: area.name });
-    if (slotsInArea.length > 0) {
+    // Check if any occupied slots exist in this area
+    const occupiedSlots = await Slot.find({ area: area.name, isEmpty: false });
+    if (occupiedSlots.length > 0) {
       return res.status(400).json({
-        message: `Cannot delete area "${area.name}". It has ${slotsInArea.length} slot(s). Delete all slots first.`
+        message: `Cannot delete area "${area.name}". It has ${occupiedSlots.length} occupied slot(s). Remove products first.`
       });
     }
 
+    // Delete all slots in this area
+    await Slot.deleteMany({ area: area.name });
+
     await Area.findByIdAndDelete(req.params.id);
-    res.json({ message: "Area deleted successfully" });
+    res.json({ message: "Area and its empty slots deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Edit Area Name
+router.put("/areas/:id", async (req, res) => {
+  try {
+    const { name } = req.body;
+
+    if (!name) {
+      return res.status(400).json({ message: "Area name is required" });
+    }
+
+    const area = await Area.findById(req.params.id);
+    if (!area) {
+      return res.status(404).json({ message: "Area not found" });
+    }
+
+    // Check if new name already exists
+    if (area.name !== name) {
+      const existingArea = await Area.findOne({ name });
+      if (existingArea) {
+        return res.status(400).json({ message: "An area with this name already exists" });
+      }
+    }
+
+    const oldName = area.name;
+    area.name = name;
+    await area.save();
+
+    // Update all slots that reference this area
+    if (oldName !== name) {
+      await Slot.updateMany(
+        { area: oldName },
+        { $set: { area: name } }
+      );
+    }
+
+    res.json({ message: "Area updated successfully", area });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
